@@ -44,7 +44,31 @@ ATank::ATank()
 		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> CannonPivot is null !");
 		return;
 	}
-	CannonPivot->SetupAttachment(GetRootComponent());
+	CannonPivot->SetupAttachment(TurretPivot);
+
+	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>("BodyMesh");
+	if (!BodyMesh)
+	{
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> BodyMesh is null !");
+		return;
+	}
+	BodyMesh->SetupAttachment(BodyPivot);
+
+	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>("TurretMesh");
+	if (!TurretMesh)
+	{
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> TurretMesh is null !");
+		return;
+	}
+	TurretMesh->SetupAttachment(TurretPivot);
+
+	CannonMesh = CreateDefaultSubobject<UStaticMeshComponent>("CannonMesh");
+	if (!CannonMesh)
+	{
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> CannonMesh is null !");
+		return;
+	}
+	CannonMesh->SetupAttachment(CannonPivot);
 }
 
 void ATank::Tick(float DeltaTime)

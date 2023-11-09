@@ -13,6 +13,8 @@ class EXOTANKS_API ATank : public APawn
 	GENERATED_BODY()
 
 private:
+	//==== Components ====
+
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxCollider;
 
@@ -24,6 +26,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* CannonPivot;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* BodyMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* TurretMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* CannonMesh;
 
 public:
 	ATank();
