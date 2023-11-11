@@ -2,4 +2,66 @@
 
 
 #include "TankController.h"
+#include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
+#include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 
+#pragma region Overrides
+void ATankController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TObjectPtr<UEnhancedInputLocalPlayerSubsystem> InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer());
+	
+	if (!InputSubsystem)
+	{
+		GLog->Log(ELogVerbosity::Error, "TankController : BeginPlay() -> Subsystem is nullptr !");
+		return;
+	}
+
+	if (!InputMapping)
+	{
+		GLog->Log(ELogVerbosity::Error, "TankController : BeginPlay() -> InputMapping is nullptr !");
+		return;
+	}
+
+	InputSubsystem->AddMappingContext(InputMapping, 0);
+
+	PlayerTank = Cast<APlayerTank>(GetPawn());
+
+	if (!PlayerTank)
+	{
+		GLog->Log(ELogVerbosity::Error, "TankController : BeginPlay() -> PlayerTank is nullptr !");
+		return;
+	}
+
+	UEnhancedInputComponent* Input = Cast<UEnhancedInputComponent>(InputComponent);
+
+	if (!Input)
+	{
+		GLog->Log(ELogVerbosity::Error, "TankController : BeginPlay() -> Input is nullptr !");
+		return;
+	}
+
+	Input->BindAction(TankLook, ETriggerEvent::Triggered, this, &ATankController::TankLookHandler);
+}
+
+void ATankController::Destroyed()
+{
+	Super::Destroyed();
+
+	TObjectPtr<UEnhancedInputLocalPlayerSubsystem> InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer());
+
+	if (InputSubsystem && InputMapping)
+		InputSubsystem->RemoveMappingContext(InputMapping);
+}
+#pragma endregion
+
+
+
+#pragma region Event Handlers
+void ATankController::TankLookHandler(const FInputActionValue& Value)
+{
+	FVector2D Axis2DValue = Value.Get<FVector2D>();
+	GLog->Log(ELogVerbosity::Log, "TankController : TankLook() -> " + Axis2DValue.ToString());
+}
+#pragma endregion

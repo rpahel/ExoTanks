@@ -71,17 +71,11 @@ ATank::ATank()
 	CannonMesh->SetupAttachment(CannonPivot);
 }
 
-void ATank::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
+//void ATank::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//
+//}
 #pragma endregion
 
 #pragma region Overrides
