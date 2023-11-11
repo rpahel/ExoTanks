@@ -13,4 +13,6 @@ UCLASS(Blueprintable)
 class EXOTANKS_API APlayerTank : public ATank
 {
 	GENERATED_BODY()
+
+	// TODO : Add Spring Arm & Camera
 };

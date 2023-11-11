@@ -16,6 +16,9 @@ private:
 	//==== Components ====
 
 	UPROPERTY(VisibleAnywhere)
+	USceneComponent* Root;
+
+	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxCollider;
 
 	UPROPERTY(VisibleAnywhere)

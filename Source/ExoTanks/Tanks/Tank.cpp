@@ -6,13 +6,13 @@
 #pragma region Public
 ATank::ATank()
 {
-	TObjectPtr<USceneComponent> newRoot = CreateDefaultSubobject<USceneComponent>("Root");
-	if (!newRoot)
+	Root = CreateDefaultSubobject<USceneComponent>("Root");
+	if (!Root)
 	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> newRoot is null !");
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> RootComponent is null !");
 		return;
 	}
-	SetRootComponent(newRoot);
+	SetRootComponent(Root);
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	if (!BoxCollider)
