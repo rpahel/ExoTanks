@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Tank.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 #include "PlayerTank.generated.h"
 
 /**
@@ -14,5 +16,19 @@ class EXOTANKS_API APlayerTank : public ATank
 {
 	GENERATED_BODY()
 
-	// TODO : Add Spring Arm & Camera
+private:
+	//==== Components ====
+
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraSpringArm;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* Camera;
+
+public:
+	APlayerTank();
+
+	void AddCannonRotation(const float& RotAmount) const;
+	void AddTurretRotation(const float& RotAmount) const;
+	void SetBodyRotation(const FRotator& NewRotation) const;
 };

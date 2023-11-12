@@ -6,13 +6,12 @@
 #pragma region Public
 ATank::ATank()
 {
-	Root = CreateDefaultSubobject<USceneComponent>("Root");
-	if (!Root)
+	PawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovement");
+	if (!PawnMovement)
 	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> RootComponent is null !");
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> Movement is null !");
 		return;
 	}
-	SetRootComponent(Root);
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	if (!BoxCollider)
@@ -20,7 +19,7 @@ ATank::ATank()
 		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> BoxCollider is null !");
 		return;
 	}
-	BoxCollider->SetupAttachment(GetRootComponent());
+	SetRootComponent(BoxCollider);
 
 	BodyPivot = CreateDefaultSubobject<USceneComponent>("BodyPivot");
 	if (!BodyPivot)

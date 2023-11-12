@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Components/BoxComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Tank.generated.h"
 
 UCLASS(Abstract, NotBlueprintable)
@@ -12,11 +13,15 @@ class EXOTANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
 
-private:
-	//==== Components ====
+protected:
+	//==== Exposed Fields ====
+	
+	UPROPERTY(EditDefaultsOnly)
+	FVector2D CannonRotationRange = FVector2D(-10, 50);
 
+	//==== Components ====
 	UPROPERTY(VisibleAnywhere)
-	USceneComponent* Root;
+	UFloatingPawnMovement* PawnMovement;
 
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxCollider;
@@ -41,9 +46,6 @@ private:
 
 public:
 	ATank();
-
-	//==== Overrides ====
-
 	//virtual void Tick(float DeltaTime) override;
 
 protected:

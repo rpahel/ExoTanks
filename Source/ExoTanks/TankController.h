@@ -21,13 +21,16 @@ class EXOTANKS_API ATankController : public APlayerController
 private:
 	//==== Exposed Fields ====
 
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay Values")
+	float MouseSensitivity = 1.f;
+
 	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
 	UInputMappingContext* InputMapping;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
 	UInputAction* TankMovement;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
 	UInputAction* TankLook;
 
 	//==== Fields ====
@@ -44,4 +47,7 @@ private:
 
 	UFUNCTION()
 	void TankLookHandler(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void TankMovementHandler(const FInputActionValue& Value);
 };

@@ -43,6 +43,7 @@ void ATankController::BeginPlay()
 	}
 
 	Input->BindAction(TankLook, ETriggerEvent::Triggered, this, &ATankController::TankLookHandler);
+	Input->BindAction(TankMovement, ETriggerEvent::Triggered, this, &ATankController::TankMovementHandler);
 }
 
 void ATankController::Destroyed()
@@ -61,7 +62,27 @@ void ATankController::Destroyed()
 #pragma region Event Handlers
 void ATankController::TankLookHandler(const FInputActionValue& Value)
 {
-	FVector2D Axis2DValue = Value.Get<FVector2D>();
-	GLog->Log(ELogVerbosity::Log, "TankController : TankLook() -> " + Axis2DValue.ToString());
+	FVector2D Axis2DValue = MouseSensitivity * Value.Get<FVector2D>();
+
+	if (PlayerTank)
+	{
+		PlayerTank->AddCannonRotation(Axis2DValue.Y);
+		PlayerTank->AddTurretRotation(Axis2DValue.X);
+	}
+}
+
+void ATankController::TankMovementHandler(const FInputActionValue& Value)
+{
+	FVector2D axis2DValue = Value.Get<FVector2D>().GetSafeNormal();
+	FVector vector3D = FVector(axis2DValue.X, axis2DValue.Y, 0);
+
+	if (PlayerTank)
+	{
+		PlayerTank->AddMovementInput(
+			vector3D,
+			1.f);
+
+		PlayerTank->SetBodyRotation(vector3D.ToOrientationRotator());
+	}
 }
 #pragma endregion
