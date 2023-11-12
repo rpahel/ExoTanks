@@ -9,9 +9,17 @@ ATank::ATank()
 	PawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovement");
 	if (!PawnMovement)
 	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> Movement is null !");
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> PawnMovement is null !");
 		return;
 	}
+
+	SphereCollider = CreateDefaultSubobject<USphereComponent>("SphereCollider");
+	if (!SphereCollider)
+	{
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> SphereCollider is null !");
+		return;
+	}
+	SetRootComponent(SphereCollider);
 
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	if (!BoxCollider)
@@ -19,7 +27,7 @@ ATank::ATank()
 		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> BoxCollider is null !");
 		return;
 	}
-	SetRootComponent(BoxCollider);
+	BoxCollider->SetupAttachment(GetRootComponent());
 
 	BodyPivot = CreateDefaultSubobject<USceneComponent>("BodyPivot");
 	if (!BodyPivot)
@@ -30,7 +38,7 @@ ATank::ATank()
 	BodyPivot->SetupAttachment(GetRootComponent());
 
 	TurretPivot = CreateDefaultSubobject<USceneComponent>("TurretPivot");
-	if (!BoxCollider)
+	if (!TurretPivot)
 	{
 		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> TurretPivot is null !");
 		return;
@@ -70,6 +78,11 @@ ATank::ATank()
 	CannonMesh->SetupAttachment(CannonPivot);
 }
 
+FRotator ATank::GetTurretRotator() const
+{
+	return TurretPivot->GetRelativeRotation();
+}
+
 //void ATank::Tick(float DeltaTime)
 //{
 //	Super::Tick(DeltaTime);
@@ -81,33 +94,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (!BoxCollider)
-	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : BeginPlay() -> BoxCollider is null !");
-		Destroy();
-		return;
-	}
 
-	if (!BodyPivot)
-	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : BeginPlay() -> BodyPivot is null !");
-		Destroy();
-		return;
-	}
-
-	if (!TurretPivot)
-	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : BeginPlay() -> TurretPivot is null !");
-		Destroy();
-		return;
-	}
-
-	if (!CannonPivot)
-	{
-		GLog->Log(ELogVerbosity::Error, GetName() + " : BeginPlay() -> CannonPivot is null !");
-		Destroy();
-		return;
-	}
 }
 #pragma endregion

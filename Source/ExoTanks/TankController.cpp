@@ -75,14 +75,17 @@ void ATankController::TankMovementHandler(const FInputActionValue& Value)
 {
 	FVector2D axis2DValue = Value.Get<FVector2D>().GetSafeNormal();
 	FVector vector3D = FVector(axis2DValue.X, axis2DValue.Y, 0);
+	FRotator orientationRot = vector3D.ToOrientationRotator();
 
 	if (PlayerTank)
 	{
+		FRotator targetRot = PlayerTank->GetTurretRotator() + orientationRot;
+
 		PlayerTank->AddMovementInput(
-			vector3D,
+			targetRot.Vector(),
 			1.f);
 
-		PlayerTank->SetBodyRotation(vector3D.ToOrientationRotator());
+		PlayerTank->SetBodyRotationTarget(targetRot);
 	}
 }
 #pragma endregion

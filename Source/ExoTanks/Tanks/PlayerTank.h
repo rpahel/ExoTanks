@@ -17,6 +17,11 @@ class EXOTANKS_API APlayerTank : public ATank
 	GENERATED_BODY()
 
 private:
+	//==== Exposed Fields ====
+
+	UPROPERTY(EditAnywhere)
+	float BodyRotationLerpAlpha = 0.05f;
+
 	//==== Components ====
 
 	UPROPERTY(VisibleAnywhere)
@@ -30,5 +35,5 @@ public:
 
 	void AddCannonRotation(const float& RotAmount) const;
 	void AddTurretRotation(const float& RotAmount) const;
-	void SetBodyRotation(const FRotator& NewRotation) const;
+	void SetBodyRotationTarget(const FRotator& NewRotation) const;
 };

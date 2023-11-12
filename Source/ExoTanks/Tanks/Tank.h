@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Tank.generated.h"
@@ -24,7 +25,10 @@ protected:
 	UFloatingPawnMovement* PawnMovement;
 
 	UPROPERTY(VisibleAnywhere)
-	UBoxComponent* BoxCollider;
+	USphereComponent* SphereCollider; // Pour les mouvements
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* BoxCollider; // Pour les collisions
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BodyPivot;
@@ -46,6 +50,7 @@ protected:
 
 public:
 	ATank();
+	FRotator GetTurretRotator() const;
 	//virtual void Tick(float DeltaTime) override;
 
 protected:

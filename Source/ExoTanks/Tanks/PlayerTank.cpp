@@ -56,8 +56,10 @@ void APlayerTank::AddTurretRotation(const float& RotAmount) const
 
 	TurretPivot->AddRelativeRotation(FRotator(0, RotAmount, 0));
 }
-void APlayerTank::SetBodyRotation(const FRotator& NewRotation) const
+
+void APlayerTank::SetBodyRotationTarget(const FRotator& NewRotation) const
 {
-	BodyPivot->SetRelativeRotation(NewRotation);
+	FRotator smoothedRot = FMath::Lerp(BodyPivot->GetRelativeRotation(), NewRotation, BodyRotationLerpAlpha);
+	BodyPivot->SetRelativeRotation(smoothedRot);
 }
 #pragma endregion
