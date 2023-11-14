@@ -21,7 +21,32 @@ APlayerTank::APlayerTank()
 		return;
 	}
 	Camera->SetupAttachment(CameraSpringArm);
+
+	LaserSourcePoint = CreateDefaultSubobject<USceneComponent>("LaserSourcePoint");
+	if (!LaserSourcePoint)
+	{
+		GLog->Log(ELogVerbosity::Error, "PlayerTank : Constructor -> LaserSourcePoint is null !");
+		return;
+	}
+	LaserSourcePoint->SetupAttachment(CannonPivot);
+
+	SplineMesh = CreateDefaultSubobject<USplineMeshComponent>("SplineMesh");
+	if (!SplineMesh)
+	{
+		GLog->Log(ELogVerbosity::Error, "PlayerTank : Constructor -> SplineMesh is null !");
+		return;
+	}
+	SplineMesh->SetupAttachment(LaserSourcePoint);
 }
+
+void APlayerTank::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (IsAiming)
+		DrawLaser();
+}
+
 void APlayerTank::AddCannonRotation(const float& RotAmount) const
 {
 	if (!CannonPivot)
@@ -61,5 +86,78 @@ void APlayerTank::SetBodyRotationTarget(const FRotator& NewRotation) const
 {
 	FRotator smoothedRot = FMath::Lerp(BodyPivot->GetRelativeRotation(), NewRotation, BodyRotationLerpAlpha);
 	BodyPivot->SetRelativeRotation(smoothedRot);
+}
+
+void APlayerTank::HideLaser()
+{
+	if (!SplineMesh || !LaserSourcePoint)
+		return;
+
+	SplineMesh->SetEndPosition(FVector::Zero());
+}
+#pragma endregion
+
+#pragma region Overrides
+void APlayerTank::BeginPlay()
+{
+	Super::BeginPlay();
+
+	World = GetWorld();
+}
+#pragma endregion
+
+#pragma region Methods
+void APlayerTank::DrawLaser()
+{
+	if (!World && !LaserSourcePoint)
+		return;
+
+	FVector splineMeshEnd = FVector::Zero();
+	FVector rayStart = LaserSourcePoint->GetComponentLocation();
+	FVector rayEnd = rayStart + AimRange * LaserSourcePoint->GetForwardVector().Normalize();
+	TArray<FHitResult> outTankHits;
+	FHitResult outObstacleHit;
+
+	DrawDebugLine(
+		World,
+		rayStart,
+		rayEnd,
+		FColor::Emerald,
+		false,
+		1.f,
+		0.1f
+	);
+
+	if (World->LineTraceSingleByChannel(outObstacleHit, rayStart, rayEnd, ECollisionChannel::ECC_Visibility))
+	{
+		GLog->Log(outObstacleHit.bBlockingHit ? "Blocking hit" : "Not Blocking Hit");
+		GLog->Log("Hit " + outObstacleHit.GetActor()->GetName());
+
+		TObjectPtr<ATank> tankHit = Cast<ATank>(outObstacleHit.GetActor());
+		if (outObstacleHit.bBlockingHit && !tankHit)
+		{
+			rayEnd = outObstacleHit.ImpactPoint;
+		}
+	}
+
+	if (World->LineTraceMultiByChannel(outTankHits, rayStart, rayEnd, ECollisionChannel::ECC_GameTraceChannel1))
+	{
+		for (FHitResult& hit : outTankHits)
+		{
+			TObjectPtr<ATank> tankHit = Cast<ATank>(hit.GetActor());
+
+			if (tankHit)
+			{
+				GLog->Log(tankHit.GetName());
+			}
+		}
+	}
+
+	splineMeshEnd = FVector((rayEnd - rayStart).Length(), 0, 0);
+
+	if (!SplineMesh)
+		return;
+
+	//SplineMesh->SetEndPosition(splineMeshEnd);
 }
 #pragma endregion

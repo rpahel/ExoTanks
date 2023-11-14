@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Tank.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/SplineMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "PlayerTank.generated.h"
 
@@ -22,6 +23,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	float BodyRotationLerpAlpha = 0.05f;
 
+	UPROPERTY(EditAnywhere)
+	float AimRange = 1000.f;
+
+	//==== Fields ====
+	
+	bool IsAiming = false;
+	TObjectPtr<UWorld> World;
+
 	//==== Components ====
 
 	UPROPERTY(VisibleAnywhere)
@@ -30,10 +39,29 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* LaserSourcePoint;
+
+	UPROPERTY(VisibleAnywhere)
+	USplineMeshComponent* SplineMesh;
+
 public:
 	APlayerTank();
+
+	virtual void Tick(float DeltaSeconds) override;
 
 	void AddCannonRotation(const float& RotAmount) const;
 	void AddTurretRotation(const float& RotAmount) const;
 	void SetBodyRotationTarget(const FRotator& NewRotation) const;
+	void SetIsAiming(bool bIsAiming) { this->IsAiming = bIsAiming; }
+	void HideLaser();
+
+private:
+	//==== Overrides ====
+
+	virtual void BeginPlay();
+
+	//==== Methods ====
+
+	void DrawLaser();
 };

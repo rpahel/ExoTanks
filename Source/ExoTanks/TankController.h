@@ -33,6 +33,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
 	UInputAction* TankLook;
 
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
+	UInputAction* Shoot;
+
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
+	UInputAction* Aim;
+
 	//==== Fields ====
 	UPROPERTY()
 	APlayerTank* PlayerTank;
@@ -50,4 +56,13 @@ private:
 
 	UFUNCTION()
 	void TankMovementHandler(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void TankAimStart(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void TankAimComplete(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void TankShoot(const FInputActionValue& Value);
 };

@@ -44,6 +44,9 @@ void ATankController::BeginPlay()
 
 	Input->BindAction(TankLook, ETriggerEvent::Triggered, this, &ATankController::TankLookHandler);
 	Input->BindAction(TankMovement, ETriggerEvent::Triggered, this, &ATankController::TankMovementHandler);
+	Input->BindAction(Aim, ETriggerEvent::Started, this, &ATankController::TankAimStart);
+	Input->BindAction(Aim, ETriggerEvent::Completed, this, &ATankController::TankAimComplete);
+	Input->BindAction(Shoot, ETriggerEvent::Started, this, &ATankController::TankShoot);
 }
 
 void ATankController::Destroyed()
@@ -87,5 +90,26 @@ void ATankController::TankMovementHandler(const FInputActionValue& Value)
 
 		PlayerTank->SetBodyRotationTarget(targetRot);
 	}
+}
+
+void ATankController::TankAimStart(const FInputActionValue& Value)
+{
+	if (!PlayerTank)
+		return;
+
+	PlayerTank->SetIsAiming(true);
+}
+
+void ATankController::TankAimComplete(const FInputActionValue& Value)
+{
+	if (!PlayerTank)
+		return;
+
+	PlayerTank->SetIsAiming(false);
+	PlayerTank->HideLaser();
+}
+
+void ATankController::TankShoot(const FInputActionValue& Value)
+{
 }
 #pragma endregion
