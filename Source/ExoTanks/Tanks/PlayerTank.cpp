@@ -114,19 +114,11 @@ void APlayerTank::DrawLaser()
 
 	FVector splineMeshEnd = FVector::Zero();
 	FVector rayStart = LaserSourcePoint->GetComponentLocation();
-	FVector rayEnd = rayStart + AimRange * LaserSourcePoint->GetForwardVector().Normalize();
+	FVector rayEnd = rayStart + AimRange * LaserSourcePoint->GetForwardVector();
 	TArray<FHitResult> outTankHits;
 	FHitResult outObstacleHit;
 
-	DrawDebugLine(
-		World,
-		rayStart,
-		rayEnd,
-		FColor::Emerald,
-		false,
-		1.f,
-		0.1f
-	);
+	//DrawDebugLine(World,rayStart,rayEnd,FColor::Emerald,false,1.f,0.1f);
 
 	if (World->LineTraceSingleByChannel(outObstacleHit, rayStart, rayEnd, ECollisionChannel::ECC_Visibility))
 	{
@@ -158,6 +150,6 @@ void APlayerTank::DrawLaser()
 	if (!SplineMesh)
 		return;
 
-	//SplineMesh->SetEndPosition(splineMeshEnd);
+	SplineMesh->SetEndPosition(splineMeshEnd);
 }
 #pragma endregion
