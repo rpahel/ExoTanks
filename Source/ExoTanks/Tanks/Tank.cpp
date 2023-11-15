@@ -76,6 +76,14 @@ ATank::ATank()
 		return;
 	}
 	CannonMesh->SetupAttachment(CannonPivot);
+
+	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>("ProjectileSpawnPoint");
+	if (!ProjectileSpawnPoint)
+	{
+		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> ProjectileSpawnPoint is null !");
+		return;
+	}
+	ProjectileSpawnPoint->SetupAttachment(CannonPivot);
 }
 
 FRotator ATank::GetTurretRotator() const
@@ -83,17 +91,18 @@ FRotator ATank::GetTurretRotator() const
 	return TurretPivot->GetRelativeRotation();
 }
 
-//void ATank::Tick(float DeltaTime)
-//{
-//	Super::Tick(DeltaTime);
-//
-//}
-#pragma endregion
-
-#pragma region Overrides
-void ATank::BeginPlay()
+void ATank::Shoot()
 {
-	Super::BeginPlay();
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.Owner = this;
 
+	FTransform transform;
+	transform.SetLocation(ProjectileSpawnPoint->GetComponentLocation());
+	transform.SetRotation(ProjectileSpawnPoint->GetComponentRotation().Quaternion());
+
+	GetWorld()->SpawnActor(
+		Projectile,
+		&transform,
+		SpawnInfo);
 }
 #pragma endregion

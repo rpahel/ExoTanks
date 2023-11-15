@@ -111,5 +111,6 @@ void ATankController::TankAimComplete(const FInputActionValue& Value)
 
 void ATankController::TankShoot(const FInputActionValue& Value)
 {
+	PlayerTank->Shoot();
 }
 #pragma endregion

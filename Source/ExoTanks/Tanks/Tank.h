@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "ExoTanks/Projectile.h"
 #include "Tank.generated.h"
 
 UCLASS(Abstract, NotBlueprintable)
@@ -19,6 +20,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	FVector2D CannonRotationRange = FVector2D(-10, 50);
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> Projectile;
 
 	//==== Components ====
 	UPROPERTY(VisibleAnywhere)
@@ -40,6 +44,9 @@ protected:
 	USceneComponent* CannonPivot;
 
 	UPROPERTY(VisibleAnywhere)
+	USceneComponent* ProjectileSpawnPoint;
+
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BodyMesh;
 
 	UPROPERTY(VisibleAnywhere)
@@ -51,13 +58,5 @@ protected:
 public:
 	ATank();
 	FRotator GetTurretRotator() const;
-	//virtual void Tick(float DeltaTime) override;
-
-protected:
-	//==== Overrides ====
-
-	virtual void BeginPlay() override;
-
-//private:
-//	//==== Methods ====
+	void Shoot();
 };
