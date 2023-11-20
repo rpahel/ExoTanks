@@ -2,6 +2,7 @@
 
 
 #include "TankController.h"
+#include "ExoTanks/BP/Actors/Tanks/PlayerTank.h"
 #include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
 

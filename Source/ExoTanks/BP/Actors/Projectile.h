@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameFramework/ProjectileMovementComponent.h"
-#include "Components/BoxComponent.h"
 #include "Projectile.generated.h"
+
+class UProjectileMovementComponent;
+class UBoxComponent;
 
 UCLASS()
 class EXOTANKS_API AProjectile : public AActor

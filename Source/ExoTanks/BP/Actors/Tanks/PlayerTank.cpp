@@ -2,6 +2,9 @@
 
 
 #include "PlayerTank.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Components/SplineMeshComponent.h"
+#include "Camera/CameraComponent.h"
 
 #pragma region Public
 APlayerTank::APlayerTank()
@@ -122,9 +125,6 @@ void APlayerTank::DrawLaser()
 
 	if (World->LineTraceSingleByChannel(outObstacleHit, rayStart, rayEnd, ECollisionChannel::ECC_Visibility))
 	{
-		GLog->Log(outObstacleHit.bBlockingHit ? "Blocking hit" : "Not Blocking Hit");
-		GLog->Log("Hit " + outObstacleHit.GetActor()->GetName());
-
 		TObjectPtr<ATank> tankHit = Cast<ATank>(outObstacleHit.GetActor());
 		if (outObstacleHit.bBlockingHit && !tankHit)
 		{

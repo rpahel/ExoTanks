@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Tanks/PlayerTank.h"
 #include "TankController.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
+class APlayerTank;
 
 /**
  * 

@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "Components/SphereComponent.h"
-#include "Components/BoxComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
-#include "ExoTanks/Projectile.h"
 #include "Tank.generated.h"
+
+class UFloatingPawnMovement;
+class USphereComponent;
+class UBoxComponent;
+class AProjectile;
 
 UCLASS(Abstract, NotBlueprintable)
 class EXOTANKS_API ATank : public APawn

@@ -2,6 +2,10 @@
 
 
 #include "Tank.h"
+#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "ExoTanks/BP/Actors/Projectile.h"
 
 #pragma region Public
 ATank::ATank()

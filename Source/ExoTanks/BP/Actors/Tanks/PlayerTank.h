@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Tank.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Components/SplineMeshComponent.h"
-#include "Camera/CameraComponent.h"
 #include "PlayerTank.generated.h"
+
+class USpringArmComponent;
+class USplineMeshComponent;
+class UCameraComponent;
 
 /**
  * 

@@ -2,6 +2,8 @@
 
 
 #include "Projectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/BoxComponent.h"
 
 AProjectile::AProjectile()
 {
