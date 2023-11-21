@@ -17,15 +17,15 @@ UCLASS()
 class EXOTANKS_API UExoTanksHUD : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 private:
 	//==== Exposed Fields ====
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ULoadingScreen> W_LoadingScreen;
+	TSubclassOf<UUserWidget> W_LoadingScreen;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UMainMenu> W_MainMenu;
+	TSubclassOf<UUserWidget> W_MainMenu;
 
 	//==== Fields ====
 
@@ -44,4 +44,19 @@ private:
 	//==== Methods ====
 
 	void AddToCanvas(TObjectPtr<UUserWidget> WidgetToFit);
+	TObjectPtr<UUserWidget> CreateAndAddWidget(TSubclassOf<UUserWidget> Widget);
+
+	//==== Event Handlers ====
+	
+	UFUNCTION()
+	void LoadingScreenToMainMenu();
+
+	UFUNCTION()
+	void SwitchToGameMode();
+
+	UFUNCTION()
+	void SwitchToUIMode();
+
+	UFUNCTION()
+	void KillMainMenu();
 };

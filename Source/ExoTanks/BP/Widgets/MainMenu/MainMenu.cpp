@@ -3,6 +3,8 @@
 
 #include "MainMenu.h"
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UMainMenu::NativeConstruct()
 {
@@ -16,9 +18,26 @@ void UMainMenu::NativeConstruct()
 		QuitButton->OnClicked.AddUniqueDynamic(this, &UMainMenu::QuitClicked);
 }
 
+void UMainMenu::NativeDestruct()
+{
+	OnCloseCompleted.Clear();
+}
+
+void UMainMenu::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
+{
+	if (Animation == CloseMainMenuAnimation)
+		OnCloseCompleted.Broadcast();
+}
+
 void UMainMenu::PlayClicked()
 {
-	GLog->Log("Play Clicked !");
+	if (!CloseMainMenuAnimation)
+	{
+		GLog->Log(ELogVerbosity::Error, "MainMenu : NativeConstruct() -> CloseMainMenuAnimation is null !");
+		return;
+	}
+
+	PlayAnimation(CloseMainMenuAnimation);
 }
 
 void UMainMenu::OptionsClicked()
@@ -29,4 +48,10 @@ void UMainMenu::OptionsClicked()
 void UMainMenu::QuitClicked()
 {
 	GLog->Log("Quit Clicked !");
+	UKismetSystemLibrary::QuitGame(
+		GetWorld(),
+		UGameplayStatics::GetPlayerController(GetWorld(), 0),
+		EQuitPreference::Quit,
+		false
+	);
 }

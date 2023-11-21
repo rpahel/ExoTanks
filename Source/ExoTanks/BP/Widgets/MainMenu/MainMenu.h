@@ -9,6 +9,8 @@
 class UExoTanksHUD;
 class UButton;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMainMenuDelegate);
+
 /**
  * 
  */
@@ -17,6 +19,9 @@ class EXOTANKS_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY()
+	FMainMenuDelegate OnCloseCompleted;
 
 private:
 	TObjectPtr<UExoTanksHUD> HUDWidget;
@@ -32,10 +37,18 @@ private:
 	UPROPERTY(meta = (BindWidget));
 	UButton* QuitButton;
 
+
+	//==== Widget Animations ====
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* CloseMainMenuAnimation;
+
 private:
 	//==== Natives ====
 
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct();
+	virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
 
 
 	//==== Event Handlers ====
