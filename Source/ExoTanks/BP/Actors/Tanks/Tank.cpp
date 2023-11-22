@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "ExoTanks/BP/Actors/Projectile.h"
+#include "Kismet/GameplayStatics.h"
 
 #pragma region Public
 ATank::ATank()
@@ -87,7 +88,23 @@ ATank::ATank()
 		GLog->Log(ELogVerbosity::Error, GetName() + " : Constructor -> ProjectileSpawnPoint is null !");
 		return;
 	}
+	
 	ProjectileSpawnPoint->SetupAttachment(CannonPivot);
+}
+
+void ATank::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	this->DeltaTime = DeltaSeconds;
+
+	if(!IsMoving)
+		CurrentFuel += FuelGainSpeed * DeltaSeconds;
+}
+
+void ATank::SetIsMoving(const bool bIsMoving)
+{
+	this->IsMoving = bIsMoving;
 }
 
 FRotator ATank::GetTurretRotator() const
@@ -108,5 +125,19 @@ void ATank::Shoot()
 		Projectile,
 		&transform,
 		SpawnInfo);
+}
+
+void ATank::MoveTowards(FVector WorldDirection, float ScaleValue, bool bForce)
+{
+	if (!PawnMovement)
+		return;
+
+	if(CurrentFuel <= 0.f)
+		return;
+
+	IsMoving = true;
+	CurrentFuel -= FuelDrainSpeed * DeltaTime;
+	
+	PawnMovement->AddInputVector(WorldDirection * ScaleValue, bForce);
 }
 #pragma endregion

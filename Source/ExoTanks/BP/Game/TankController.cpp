@@ -45,6 +45,8 @@ void ATankController::BeginPlay()
 
 	Input->BindAction(TankLook, ETriggerEvent::Triggered, this, &ATankController::TankLookHandler);
 	Input->BindAction(TankMovement, ETriggerEvent::Triggered, this, &ATankController::TankMovementHandler);
+	Input->BindAction(TankMovement, ETriggerEvent::Completed, this, &ATankController::TankMovementStopped);
+	Input->BindAction(TankMovement, ETriggerEvent::Canceled, this, &ATankController::TankMovementStopped);
 	Input->BindAction(Aim, ETriggerEvent::Started, this, &ATankController::TankAimStart);
 	Input->BindAction(Aim, ETriggerEvent::Completed, this, &ATankController::TankAimComplete);
 	Input->BindAction(Shoot, ETriggerEvent::Started, this, &ATankController::TankShoot);
@@ -85,12 +87,20 @@ void ATankController::TankMovementHandler(const FInputActionValue& Value)
 	{
 		FRotator targetRot = PlayerTank->GetTurretRotator() + orientationRot;
 
-		PlayerTank->AddMovementInput(
+		PlayerTank->MoveTowards(
 			targetRot.Vector(),
 			1.f);
-
+		
 		PlayerTank->SetBodyRotationTarget(targetRot);
 	}
+}
+
+void ATankController::TankMovementStopped(const FInputActionValue& Value)
+{
+	if (!PlayerTank)
+		return;
+
+	PlayerTank->SetIsMoving(false);
 }
 
 void ATankController::TankAimStart(const FInputActionValue& Value)

@@ -58,6 +58,9 @@ private:
 	void TankMovementHandler(const FInputActionValue& Value);
 
 	UFUNCTION()
+	void TankMovementStopped(const FInputActionValue& Value);
+
+	UFUNCTION()
 	void TankAimStart(const FInputActionValue& Value);
 
 	UFUNCTION()
