@@ -5,6 +5,8 @@
 #include "ExoTanks/BP/Actors/Tanks/PlayerTank.h"
 #include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "../../../../UE_5.3/Engine/Plugins/EnhancedInput/Source/EnhancedInput/Public/EnhancedInputComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region Overrides
 void ATankController::BeginPlay()
@@ -48,6 +50,7 @@ void ATankController::BeginPlay()
 	Input->BindAction(Aim, ETriggerEvent::Started, this, &ATankController::TankAimStart);
 	Input->BindAction(Aim, ETriggerEvent::Completed, this, &ATankController::TankAimComplete);
 	Input->BindAction(Shoot, ETriggerEvent::Started, this, &ATankController::TankShoot);
+	Input->BindAction(Quit, ETriggerEvent::Started, this, &ATankController::QuitPressed);
 }
 
 void ATankController::Destroyed()
@@ -113,5 +116,16 @@ void ATankController::TankAimComplete(const FInputActionValue& Value)
 void ATankController::TankShoot(const FInputActionValue& Value)
 {
 	PlayerTank->Shoot();
+}
+
+void ATankController::QuitPressed(const FInputActionValue& Value)
+{
+	GLog->Log("Quit Clicked !");
+	UKismetSystemLibrary::QuitGame(
+		GetWorld(),
+		UGameplayStatics::GetPlayerController(GetWorld(), 0),
+		EQuitPreference::Quit,
+		false
+	);
 }
 #pragma endregion

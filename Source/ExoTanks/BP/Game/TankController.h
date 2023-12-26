@@ -39,6 +39,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
 	UInputAction* Aim;
 
+	UPROPERTY(EditDefaultsOnly, Category = "EnhancedInput")
+	UInputAction* Quit;
+
 	//==== Fields ====
 	UPROPERTY()
 	APlayerTank* PlayerTank;
@@ -65,4 +68,7 @@ private:
 
 	UFUNCTION()
 	void TankShoot(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void QuitPressed(const FInputActionValue& Value);
 };
