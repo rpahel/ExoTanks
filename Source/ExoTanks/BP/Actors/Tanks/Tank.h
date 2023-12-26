@@ -25,22 +25,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AProjectile> Projectile;
 
-	//==== Fields ====
-
-	UPROPERTY(EditAnywhere)
-	float MaxFuel = 100.f;
-
-	UPROPERTY(EditAnywhere)
-	float FuelDrainSpeed = 1.f;
-
-	UPROPERTY(EditAnywhere)
-	float FuelGainSpeed = 1.f;
-	
-	float CurrentFuel;
-	float DeltaTime;
-
-	bool IsMoving = false;
-
 	//==== Components ====
 	UPROPERTY(VisibleAnywhere)
 	UFloatingPawnMovement* PawnMovement;
@@ -74,11 +58,6 @@ protected:
 
 public:
 	ATank();
-
-	virtual void Tick(float DeltaSeconds) override;
-
-	void SetIsMoving(const bool bIsMoving);
-	void Shoot();
-	void MoveTowards(FVector WorldDirection, float ScaleValue = 1.0f, bool bForce = false);
 	FRotator GetTurretRotator() const;
+	void Shoot();
 };

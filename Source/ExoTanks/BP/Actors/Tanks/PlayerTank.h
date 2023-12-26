@@ -30,9 +30,7 @@ private:
 	//==== Fields ====
 	
 	bool IsAiming = false;
-	
-	UPROPERTY()
-	UWorld* World;
+	TObjectPtr<UWorld> World;
 
 	//==== Components ====
 
